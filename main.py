@@ -6,6 +6,46 @@ import threading
 import os
 import pickle
 import base64
+import hashlib
+
+# Check for updates
+def download_latest_version(save_path, repo_owner, repo_name, file_path, branch="main"):
+    script_url = f"https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/{file_path}"
+    try:
+        response = requests.get(script_url, timeout=10)
+        response.raise_for_status()
+        with open(save_path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+        print("Successfully updated to the latest version.")
+    except requests.RequestException as e:
+        print(f"Error downloading the latest version: {e}")
+
+def generate_sha256_checksum_github(repo_owner, repo_name, file_path, branch="main"):
+    url = f"https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/{file_path}"
+    response = requests.get(url, stream=True)
+    response.raise_for_status()
+
+    sha256_hash = hashlib.sha256()
+    for chunk in response.iter_content(chunk_size=8192):
+        if chunk:
+            sha256_hash.update(chunk)
+    return sha256_hash.hexdigest()
+
+def generate_sha256_checksum_file(file_path):
+    sha256_hash = hashlib.sha256()
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            sha256_hash.update(chunk)
+    return sha256_hash.hexdigest()
+
+print("Checking for online updates.")
+if generate_sha256_checksum_github("LunaZaps", "Ctrl-Z-ap", "main.py") != generate_sha256_checksum_file(os.path.abspath(__file__)):
+    print("A newer version is available! Updating...")
+    download_latest_version(os.path.abspath(__file__), "LunaZaps", "Ctrl-Z-ap", "main.py")
+    input("Done. Please restart the script by pressing enter and reopening again.")
+    quit()
+else:
+    print("You are using the latest version.")
 
 # Initialize shock counter
 shock_count = 0
