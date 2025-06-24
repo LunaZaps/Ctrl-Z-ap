@@ -99,10 +99,10 @@ def main():
         API_KEY = dmp["api"]
     global DEVICE_CODES
     DEVICE_CODES = []
-    codea = input("Shocker codes (Each on diffrent line. If you are done, just leave this blank): ")
+    codea = input("Shocker share codes (Each on diffrent line. If you are done, just leave this blank): ")
     while True:
         DEVICE_CODES.append(codea)
-        codea = input("Shocker codes (Each on diffrent line. If you are done, just leave this blank): ")
+        codea = input("Shocker share codes (Each on diffrent line. If you are done, just leave this blank): ")
         if codea is None or codea == "":
             break
     # Shock settings
