@@ -3,7 +3,7 @@ Zaps you when you press the undo shortcut (Ctrl+Z)!
 Perfect for programmers or digital artists and supports Up To Eight Shockers! 
 ## How to set it up
 ### Prerequisites
-Python 3.11 and higher installed  
+Python 3.11 or higher installed  
 A PiShock hub and shockers set up
 
 ### How to run
